@@ -16,14 +16,17 @@ var player = $("#player");
 var playerPosX = 50;
 var playerPosY = 500;
 var playerGroundSpd = 4;
-var playerAirSpd = 1.5;
-var playerGravity = 0.1;
-var playerGravSpd = 0;
+// var playerAirSpd = 1.5;
+// var playerGravity = 0.1;
+// var playerGravSpd = 0;
 var arrived = false;
 
 // Tool variables
-var tool = $("#tool");
-var toolPosX = 350;
+var tool = $(".tool");
+var tool1 = $("#tool1");
+var tool2 = $("#tool2");
+var tool3 = $("#tool3");
+var toolPosX = Math.floor((Math.random() * 450) + 200);
 var toolPosY = 100;
 var toolGravity = 0.008;
 var toolGravSpd = -0.2;
@@ -93,7 +96,17 @@ $("#btn").click(function(){
         'top': playerPosY + "px"
       })
 
-      tool.css({
+      tool1.css({
+        'left': toolPosX + "px",
+        'top': toolPosY + "px"
+      })
+
+      tool2.css({
+        'left': toolPosX + "px",
+        'top': toolPosY + "px"
+      })
+
+      tool3.css({
         'left': toolPosX + "px",
         'top': toolPosY + "px"
       })
@@ -127,11 +140,11 @@ $("#btn").click(function(){
       // ----- PLAYER CODE -----
       // Moving left (& collision with the start building)
       if (left && playerLeft >= startRight - 50) {
-        if (jumping) {
-          playerPosX -= playerAirSpd;
-        } else{
+        // if (jumping) {
+        //   playerPosX -= playerAirSpd;
+        // } else{
           playerPosX -= playerGroundSpd;
-        }
+        // }
         console.log ("left");
       }
 
@@ -141,11 +154,11 @@ $("#btn").click(function(){
 
       // Moving right
       if (right) {
-        if (jumping) {
-          playerPosX += playerAirSpd;
-        } else{
+        // if (jumping) {
+        //   playerPosX += playerAirSpd;
+        // } else{
           playerPosX += playerGroundSpd;
-        }
+        // }
         console.log ("right");
       }
 
@@ -153,7 +166,7 @@ $("#btn").click(function(){
 
       function resetPlayerPos() {
         playerPosX = 50;
-        playerGravSpd = 0;
+        // playerGravSpd = 0;
         playerPosY = 500;
       }
       if (playerRight >= houseLeft) {
@@ -175,23 +188,23 @@ $("#btn").click(function(){
       }
 
       // Tracking jump speed
-      playerGravSpd += playerGravity;
-      playerPosY+= playerGravSpd;
+      // playerGravSpd += playerGravity;
+      // playerPosY+= playerGravSpd;
 
       // Jumping
-      if (up && jumping == false){
-        jumping = true;
-        playerGravity = 0.1;
-        playerGravSpd = -5;
-        console.log("up");
-      }
-      // Floor collision
-      if (playerBottom >= containerBottom && jumping == true) {
-        jumping = false;
-        playerPosY = 500;
-        playerGravity = 0;
-        playerGravSpd = 0;
-      }
+      // if (up && jumping == false){
+      //   jumping = true;
+      //   playerGravity = 0.1;
+      //   playerGravSpd = -5;
+      //   console.log("up");
+      // }
+      // // Floor collision
+      // if (playerBottom >= containerBottom && jumping == true) {
+      //   jumping = false;
+      //   playerPosY = 500;
+      //   playerGravity = 0;
+      //   playerGravSpd = 0;
+      // }
       // -----------------------
 
 

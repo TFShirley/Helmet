@@ -34,12 +34,24 @@ body {
   background: darkslateblue;
 }
 
-#tool {
+.tool {
   height:50px;
   width:50px;
   background: red;
   border-radius: 50%;
   position: absolute;
+}
+
+#tool1 {
+  left: 250px;
+}
+
+#tool2 {
+  left: 350px;
+}
+
+#tool3 {
+  left: 450px;
 }
 
 
