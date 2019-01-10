@@ -1,0 +1,63 @@
+body {
+  font-family: monospace;
+  text-align: center;
+  margin: 5px auto
+}
+
+.container {
+  height:600px;
+  width:800px;
+  margin: auto;
+  background: lavender;
+  position: relative;
+}
+.building {
+  height: 280px;
+  width: 80px;
+  position: absolute;
+  background: gainsboro;
+}
+#house {
+  background: darkseagreen;
+}
+
+#player {
+  height:60px;
+  width:30px;
+  position: absolute;
+  background: darkslateblue;
+}
+#tool {
+  height:50px;
+  width:50px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+}
+
+
+.btn-container {
+  text-align: center;
+}
+
+#btn {
+  font-size: 1.5em;
+  padding:.5em 1.5em;
+  margin: .5em;
+  background: none;
+  border-radius: 1.5em;
+  border: 2px solid #999;
+  color:#999;
+  transition: .2s;
+  outline: none;
+}
+#btn:hover {
+  background: #999;
+  color: white;
+  border: 2px solid #999;
+}
+#btn:active {
+  background: #666;
+  color: white;
+  border: 2px solid #666;
+}
