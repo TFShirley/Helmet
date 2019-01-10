@@ -12,8 +12,8 @@ body {
   position: relative;
 }
 .building {
-  height: 280px;
-  width: 80px;
+  height: 300px;
+  width: 100px;
   position: absolute;
   bottom: 0;
   background: gainsboro;
@@ -24,13 +24,14 @@ body {
 }
 
 #player {
-  height:60px;
-  width:30px;
+  height:100px;
+  width:50px;
   position: absolute;
   bottom: 0;
-  left: 40px;
+  left: 50px;
   background: darkslateblue;
 }
+
 #tool {
   height:50px;
   width:50px;
