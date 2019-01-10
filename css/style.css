@@ -15,16 +15,20 @@ body {
   height: 280px;
   width: 80px;
   position: absolute;
+  bottom: 0;
   background: gainsboro;
 }
 #house {
   background: darkseagreen;
+  right: 0;
 }
 
 #player {
   height:60px;
   width:30px;
   position: absolute;
+  bottom: 0;
+  left: 40px;
   background: darkslateblue;
 }
 #tool {

@@ -83,7 +83,8 @@ $("#btn").click(function(){
       var containerRight = containerLeft + container.width();
       var containerTop = container.offset().top;
       var containerBottom = containerTop + container.height();
-      // Tracking player movement
+      console.log(containerBottom);
+
       player.css({
         'left': playerPosX + "px",
         'top': playerPosY + "px"
@@ -93,15 +94,8 @@ $("#btn").click(function(){
         'left': toolPosX + "px",
         'top': toolPosY + "px"
       })
-      // Start location for buildings
-      start.css({
-        'left': 0 + "px",
-        'top': containerBottom - 345 + "px"
-      })
-      house.css({
-        'left': containerRight - building.width() + "px",
-        'top': containerBottom - 345 + "px"
-      })
+
+      // Tracking player movement
       // Player
       var playerLeft = player.offset().left;
       var playerRight = playerLeft + player.width();
@@ -117,6 +111,7 @@ $("#btn").click(function(){
       var startRight = startLeft + start.width();
       var startTop = start.offset().top;
       var startBottom = startTop + start.height();
+      console.log(startBottom + "," + startTop);
       // Safehouse
       var houseLeft = house.offset().left;
       var houseRight = houseLeft + house.width();
