@@ -7,6 +7,7 @@ var container = $("#container");
 var building = $(".building");
 var start = $("#start");
 var house = $("#house");
+var doorOpen = false;
 var score = 0;
 var lives = 3;
 
@@ -14,6 +15,8 @@ var lives = 3;
 var player = $("#player");
 var playerPosX = 50;
 var playerPosY = 500;
+var playerGroundSpd = 4;
+var playerAirSpd = 1.5;
 var playerGravity = 0.1;
 var playerGravSpd = 0;
 var arrived = false;
@@ -22,7 +25,7 @@ var arrived = false;
 var tool = $("#tool");
 var toolPosX = 350;
 var toolPosY = 100;
-var toolGravity = 0.005;
+var toolGravity = 0.008;
 var toolGravSpd = -0.2;
 
 
@@ -106,6 +109,7 @@ $("#btn").click(function(){
       var toolRight = toolLeft + tool.width();
       var toolTop = tool.offset().top;
       var toolBottom = toolTop + tool.height();
+
       // Start building
       var startLeft = start.offset().left;
       var startRight = startLeft + start.width();
@@ -124,60 +128,56 @@ $("#btn").click(function(){
       // Moving left (& collision with the start building)
       if (left && playerLeft >= startRight - 50) {
         if (jumping) {
-          playerPosX -= 1.5;
+          playerPosX -= playerAirSpd;
         } else{
-          playerPosX -= 4;
+          playerPosX -= playerGroundSpd;
         }
         console.log ("left");
       }
 
       // if (playerLeft < startRight) {
-      //   playerPosX = 81;
-      // }
+        //   playerPosX = 81;
+        // }
 
       // Moving right
       if (right) {
         if (jumping) {
-          playerPosX += 1.5;
+          playerPosX += playerAirSpd;
         } else{
-          playerPosX += 4;
+          playerPosX += playerGroundSpd;
         }
         console.log ("right");
       }
 
       // Touching the Safehouse
-      if (playerRight >= houseLeft) {
-        arrived = true;
+
+      function resetPlayerPos() {
         playerPosX = 50;
         playerGravSpd = 0;
         playerPosY = 500;
+      }
+      if (playerRight >= houseLeft) {
+        arrived = true;
+        resetPlayerPos();
         score++;
         $("#score").html(score);
       } else {
         arrived = false
       }
 
-      // Touching a Tool
+    // Touching a Tool
       if (playerRight >= toolLeft && playerTop <= toolBottom
-        && playerLeft <= toolRight && playerTop <= toolBottom) {
-        toolPosY = 100;
-        toolGravSpd = -0.2;
-        // toolPosX = houseLeft;
-        toolPosX = parseInt(Math.random() * ((houseLeft - tool.width())- startRight) + building.width());
-        playerPosX = 50;
-        playerGravSpd = 0;
-        playerPosY = 500;
+      && playerLeft <= toolRight && playerTop <= toolBottom) {
+        resetToolPos();
+        resetPlayerPos();
         lives--;
         $("#lives").html(lives);
       }
 
-      // if (playerRight > houseLeft && arrived == false) {
-      //   // Resets player position at the start building
-      // }
-
       // Tracking jump speed
       playerGravSpd += playerGravity;
       playerPosY+= playerGravSpd;
+
       // Jumping
       if (up && jumping == false){
         jumping = true;
@@ -194,17 +194,20 @@ $("#btn").click(function(){
       }
       // -----------------------
 
+
       // ------- TOOL CODE -------
-
-
-
+      // Tracking fall speed
       toolGravSpd += toolGravity;
       toolPosY+= toolGravSpd;
-      if (toolTop >= containerBottom) {
+
+      function resetToolPos() {
         toolPosY = 100;
         toolGravSpd = -0.2;
-        // toolPosX = houseLeft;
-        toolPosX = parseInt(Math.random() * ((houseLeft - tool.width())- startRight) + building.width());
+        toolPosX = Math.floor((Math.random() * 450) + 200);
+      }
+
+      if (toolTop >= containerBottom - tool.height()) {
+        resetToolPos();
       }
     }, 6);
   }

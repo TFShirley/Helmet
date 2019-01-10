@@ -1,7 +1,9 @@
 body {
   font-family: monospace;
   text-align: center;
-  margin: 5px auto
+  margin: 5px auto;
+  background: black;
+  color: white;
 }
 
 .container {
@@ -16,10 +18,10 @@ body {
   width: 100px;
   position: absolute;
   bottom: 0;
-  background: gainsboro;
+  background: lightsteelblue;
 }
 #house {
-  background: darkseagreen;
+  /* background: darkseagreen; */
   right: 0;
 }
 
