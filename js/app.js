@@ -1,36 +1,33 @@
 // Is this thing on??
 var interval;
 var progRunning = false;
-
+var paused = false;
 // Defining game variables
 var container = $("#container");
 var building = $(".building");
 var start = $("#start");
 var house = $("#house");
+var doorClock;
 var doorOpen = false;
 var score = 0;
-var lives = 3;
-
+var lives = 0;
 // Player variables
 var player = $("#player");
 var playerPosX = 50;
 var playerPosY = 500;
-var playerGroundSpd = 4;
-// var playerAirSpd = 1.5;
-// var playerGravity = 0.1;
-// var playerGravSpd = 0;
+var playerGroundSpd = 2.5;
 var arrived = false;
-
 // Tool variables
 var tool = $(".tool");
 var tool1 = $("#tool1");
 var tool2 = $("#tool2");
 var tool3 = $("#tool3");
-var toolPosX = Math.floor((Math.random() * 450) + 200);
-var toolPosY = 100;
-var toolGravity = 0.008;
-var toolGravSpd = -0.2;
-
+var toolPosX = [Math.floor((Math.random() * 450) + 200),
+  Math.floor((Math.random() * 450) + 200),
+  Math.floor((Math.random() * 450) + 200)];
+var toolPosY = [200,200,200];
+var toolGravity = 0.01;
+var toolGravSpd = [-0.5,-0.2,-0.9];
 
 // ----- Controls -----
 // Flags for movement
@@ -70,47 +67,54 @@ $(document).keyup(function(e) {
 //  -------------------
 
 $("#btn").click(function(){
-  if (progRunning) {
+  // Pause
+  if (progRunning == true && paused == false) {
     progRunning = false;
+    paused = true; 
     clearInterval(interval);
     $("#btn").html(">");
-    console.log("Stopped");
+    console.log("Paused");
+    // Unpause
   } else {
     progRunning = true;
-    console.log("Started");
+    paused = false;
+    // If you're dead, restart
+    if (lives == 0) {
+      lives = 3;
+      score = 0;
+      $("#lives").html(lives);
+      $("#score").html(score);
+      console.log("Started");
+      // Otherwise carry on
+    } else {
+      console.log("Unpaused");
+    }
     $("#btn").html("||");
 
     interval = setInterval(function(){
-
       // Defined object edges
-      // --------------------
       // Container
       var containerLeft = container.offset().left;
       var containerRight = containerLeft + container.width();
       var containerTop = container.offset().top;
       var containerBottom = containerTop + container.height();
-      // console.log(containerBottom);
 
       player.css({
         'left': playerPosX + "px",
         'top': playerPosY + "px"
       })
-
       tool1.css({
-        'left': toolPosX + "px",
-        'top': toolPosY + "px"
+        'left': toolPosX[0] + "px",
+        'top': toolPosY[0] + "px"
       })
-
       tool2.css({
-        'left': toolPosX + "px",
-        'top': toolPosY + "px"
+        'left': toolPosX[1] + "px",
+        'top': toolPosY[1] + "px"
       })
-
       tool3.css({
-        'left': toolPosX + "px",
-        'top': toolPosY + "px"
+        'left': toolPosX[2] + "px",
+        'top': toolPosY[2] + "px"
       })
-
       // Tracking player movement
       // Player
       var playerLeft = player.offset().left;
@@ -122,13 +126,11 @@ $("#btn").click(function(){
       var toolRight = toolLeft + tool.width();
       var toolTop = tool.offset().top;
       var toolBottom = toolTop + tool.height();
-
       // Start building
       var startLeft = start.offset().left;
       var startRight = startLeft + start.width();
       var startTop = start.offset().top;
       var startBottom = startTop + start.height();
-      // console.log(startBottom + "," + startTop);
       // Safehouse
       var houseLeft = house.offset().left;
       var houseRight = houseLeft + house.width();
@@ -136,40 +138,23 @@ $("#btn").click(function(){
       var houseBottom = houseTop + house.height();
       // --------------------
 
-
       // ----- PLAYER CODE -----
       // Moving left (& collision with the start building)
       if (left && playerLeft >= startRight - 50) {
-        // if (jumping) {
-        //   playerPosX -= playerAirSpd;
-        // } else{
-          playerPosX -= playerGroundSpd;
-        // }
+        playerPosX -= playerGroundSpd;
         console.log ("left");
       }
-
-      // if (playerLeft < startRight) {
-        //   playerPosX = 81;
-        // }
-
       // Moving right
-      if (right) {
-        // if (jumping) {
-        //   playerPosX += playerAirSpd;
-        // } else{
-          playerPosX += playerGroundSpd;
-        // }
+      if (right && playerRight <= houseLeft - 1) {
+        playerPosX += playerGroundSpd;
         console.log ("right");
       }
-
       // Touching the Safehouse
-
       function resetPlayerPos() {
         playerPosX = 50;
-        // playerGravSpd = 0;
         playerPosY = 500;
       }
-      if (playerRight >= houseLeft) {
+      if (playerRight >= houseLeft && doorOpen == true) {
         arrived = true;
         resetPlayerPos();
         score++;
@@ -177,51 +162,59 @@ $("#btn").click(function(){
       } else {
         arrived = false
       }
-
     // Touching a Tool
-      if (playerRight >= toolLeft && playerTop <= toolBottom
-      && playerLeft <= toolRight && playerTop <= toolBottom) {
-        resetToolPos();
-        resetPlayerPos();
-        lives--;
-        $("#lives").html(lives);
-      }
-
-      // Tracking jump speed
-      // playerGravSpd += playerGravity;
-      // playerPosY+= playerGravSpd;
-
-      // Jumping
-      // if (up && jumping == false){
-      //   jumping = true;
-      //   playerGravity = 0.1;
-      //   playerGravSpd = -5;
-      //   console.log("up");
-      // }
-      // // Floor collision
-      // if (playerBottom >= containerBottom && jumping == true) {
-      //   jumping = false;
-      //   playerPosY = 500;
-      //   playerGravity = 0;
-      //   playerGravSpd = 0;
-      // }
+      tool.each(function(index){
+        if (playerRight >= $(this).offset().left && playerTop <= ($(this).offset().top + $(this).height())
+        && playerLeft <= ($(this).offset().left + $(this).width())) {
+          resetToolPos(index);
+          resetPlayerPos();
+          lives--;
+          $("#lives").html(lives);
+          if (lives == 0) {
+            lives == 3;
+            score == 0;
+            progRunning = false;
+            doorOpen = false;
+            clearInterval(interval);
+            $("#btn").html("start");
+          }
+        }
+      })
       // -----------------------
-
 
       // ------- TOOL CODE -------
       // Tracking fall speed
-      toolGravSpd += toolGravity;
-      toolPosY+= toolGravSpd;
-
-      function resetToolPos() {
-        toolPosY = 100;
-        toolGravSpd = -0.2;
-        toolPosX = Math.floor((Math.random() * 450) + 200);
+      for (var i = 0; i < toolGravSpd.length; i++) {
+        toolGravSpd[i] += toolGravity;
       }
-
-      if (toolTop >= containerBottom - tool.height()) {
-        resetToolPos();
+      for (var i = 0; i < toolPosY.length; i++) {
+        toolPosY[i]+=toolGravSpd[i]
       }
+      function resetToolPos(i) {
+        toolPosY[i] = 200;
+        toolGravSpd[i] = Math.floor((Math.random() * (0.7) -0.2).toFixed(1));
+        toolPosX[i] = Math.floor((Math.random() * 450) + 200);
+      }
+      tool.each(function(index){
+        if ($(this).offset().top >= 640) {
+          resetToolPos(index);
+        }
+      })
+      // ------------------------
+
+      // SAFE HOUSE CODE
+      doorClock = setInterval(function(){
+        if (doorOpen == false) {
+          doorOpen = true;
+          $("#house").css('background', 'lime');
+          console.log("Opened the door");
+        // } else {
+        //   doorOpen = false;
+        //   $("#house").css('background', 'lightsteelblue');
+        }
+
+      }, 1000);
+
     }, 6);
   }
 });

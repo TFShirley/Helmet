@@ -44,14 +44,17 @@ body {
 
 #tool1 {
   left: 250px;
+  background-color: red;
 }
 
 #tool2 {
   left: 350px;
+  background-color: blue;
 }
 
 #tool3 {
   left: 450px;
+  background-color: green;
 }
 
 
