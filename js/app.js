@@ -9,8 +9,11 @@ var start = $("#start");
 var house = $("#house");
 var doorClock;
 var doorOpen = false;
+$("#house").css('background', 'lime');
 var score = 0;
 var lives = 0;
+
+
 // Player variables
 var player = $("#player");
 var playerPosX = 50;
@@ -86,6 +89,8 @@ $("#btn").click(function(){
       $("#score").html(score);
       console.log("Started");
       // Otherwise carry on
+      doorOpen = true;
+      // $("#house").css('background', 'lime');
     } else {
       console.log("Unpaused");
     }
@@ -115,6 +120,7 @@ $("#btn").click(function(){
         'left': toolPosX[2] + "px",
         'top': toolPosY[2] + "px"
       })
+
       // Tracking player movement
       // Player
       var playerLeft = player.offset().left;
@@ -159,6 +165,7 @@ $("#btn").click(function(){
         resetPlayerPos();
         score++;
         $("#score").html(score);
+        console.log("Arrived");
       } else {
         arrived = false
       }
@@ -170,6 +177,7 @@ $("#btn").click(function(){
           resetPlayerPos();
           lives--;
           $("#lives").html(lives);
+          console.log("Hit");
           if (lives == 0) {
             lives == 3;
             score == 0;
@@ -177,6 +185,7 @@ $("#btn").click(function(){
             doorOpen = false;
             clearInterval(interval);
             $("#btn").html("start");
+            console.log("Game Over");
           }
         }
       })
@@ -203,17 +212,17 @@ $("#btn").click(function(){
       // ------------------------
 
       // SAFE HOUSE CODE
-      doorClock = setInterval(function(){
-        if (doorOpen == false) {
-          doorOpen = true;
-          $("#house").css('background', 'lime');
-          console.log("Opened the door");
+      // doorClock = setInterval(function(){
+        // if (doorOpen == false) {
+          // doorOpen = true;
+          // $("#house").css('background', 'lime');
+          // console.log("Opened the door");
         // } else {
         //   doorOpen = false;
         //   $("#house").css('background', 'lightsteelblue');
-        }
+        // }
 
-      }, 1000);
+      // }, 1000);
 
     }, 6);
   }

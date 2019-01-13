@@ -31,30 +31,50 @@ body {
   position: absolute;
   bottom: 0;
   left: 50px;
-  background: darkslateblue;
+  /* background: darkslateblue; */
+}
+
+#player img {
+  margin-left: 50%;
+  transform: translateX(-50%);
+  height: 100px;
 }
 
 .tool {
   height:50px;
   width:50px;
-  background: red;
+  /* background: red; */
   border-radius: 50%;
   position: absolute;
 }
 
 #tool1 {
   left: 250px;
-  background-color: red;
+  /* background-color: red; */
 }
 
 #tool2 {
   left: 350px;
-  background-color: blue;
+  /* background-color: blue; */
 }
 
 #tool3 {
   left: 450px;
-  background-color: green;
+  /* background-color: green; */
+}
+
+@keyframes rotate360 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.tool img {
+  /* margin-left: 50%; */
+  transform: translateX(-50%);
+  /* display: block; */
+  /* width: 50px; */
+  height: 60px;
+  animation: rotate360 1s infinite linear;
 }
 
 
